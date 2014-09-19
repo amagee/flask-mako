@@ -211,12 +211,8 @@ def _render(template, context, app):
         template_rendered.send(app, template=template, context=context)
         return rv
     except:
-        translate = app.config.get("MAKO_TRANSLATE_EXCEPTIONS")
-        if translate:
-            translated = TemplateError(template)
-            raise translated
-        else:
-            raise
+        from mako import exceptions
+        return exceptions.html_error_template().render()
 
 
 def render_template(template_name, **context):
